@@ -81,7 +81,7 @@ pip install -e .
 ### Running Tests
 
 ```bash
-python -m unittest discover -s msx_charset/tests
+python -m unittest discover -s tests
 ```
 
 ## Contributing

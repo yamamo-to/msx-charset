@@ -6,10 +6,10 @@ include README.md
 
 # Include all Python files
 include msx_charset/*.py
-include msx_charset/tests/*.py
 
-# Include test data if any
-include msx_charset/tests/data/*
+# Include test files
+include tests/*.py
+include tests/data/*
 
 # Include documentation
 include docs/*.md

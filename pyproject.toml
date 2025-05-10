@@ -27,7 +27,7 @@ packages = ["msx_charset"]
 license-files = []
 
 [tool.pytest.ini_options]
-testpaths = ["msx_charset/tests"]
+testpaths = ["tests"]
 python_files = ["test_*.py"] 
 
 [project.urls]

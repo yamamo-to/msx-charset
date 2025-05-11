@@ -2,8 +2,8 @@ import codecs
 from .codec_jp import msx_codec_jp
 from .codec_intl import msx_codec_intl
 from .codec_br import msx_codec_br
+from ._version import __version__
 
-__version__ = "0.1.2"
 __all__ = ["msx_codec_jp", "msx_codec_intl", "msx_codec_br"]
 
 

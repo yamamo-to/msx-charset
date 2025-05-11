@@ -10,7 +10,7 @@ A Python package for converting between Unicode and MSX character sets, supporti
   - Japanese version
   - International version
   - Brazilian version
-- Compatible with Python 3.8 and later
+- Compatible with Python 3.9 and later
 
 ## Installation
 

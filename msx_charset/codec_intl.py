@@ -1,12 +1,4 @@
-import codecs
 from .codec_base import MSXCodecBase
-
-# Define data first
-# ASCII (0x00-0x7F) range mapping (some control characters are allowed)
-MSX_ASCII_MAP = {
-    i: chr(i) for i in range(0x80)
-    if chr(i).isprintable() or chr(i) in '\x00\x07\x08\x09\x0A\x0D\x1B\x20'
-}
 
 # MSX International
 MSX_CUSTOM_MAP_INTL = {
@@ -27,11 +19,11 @@ MSX_CUSTOM_MAP_INTL = {
     0xB4: 'Õ', 0xB5: 'õ', 0xB6: 'Ű', 0xB7: 'ű',
     0xB8: 'Ĳ', 0xB9: 'ĳ', 0xBA: '¾', 0xBB: '∽',
     0xBC: '◊', 0xBD: '‰', 0xBE: '¶', 0xBF: '§',
-														
+
     0xC0: '▂', 0xC1: '▚', 0xC2: '▆', 0xC3: '🮂',
     0xC4: '▬', 0xC5: '🮅', 0xC6: '▎', 0xC7: '▞',
     0xC8: '▊', 0xC9: '🮇', 0xCA: '🮊', 0xCB: '🮙',
-    0xCC: '🮘', 0xCD: '🭭', 0xCE: '🭯', 0xCF: '🭬',																    
+    0xCC: '🮘', 0xCD: '🭭', 0xCE: '🭯', 0xCF: '🭬',
     0xD0: '🭮', 0xD1: '🮚', 0xD2: '🮛', 0xD3: '▘',
     0xD4: '▗', 0xD5: '▝', 0xD6: '▖', 0xD7: '🮖',
     0xD8: 'Δ', 0xD9: '‡', 0xDA: 'ω', 0xDB: '█',
@@ -47,14 +39,6 @@ MSX_CUSTOM_MAP_INTL = {
     0xFC: 'ⁿ', 0xFD: '²', 0xFE: '■'
 }
 
-# Combined map (MSX code to character)
-MSX_CHAR_MAP_INTL = dict(MSX_ASCII_MAP)
-MSX_CHAR_MAP_INTL.update(MSX_CUSTOM_MAP_INTL)
-
-# Reverse lookup (character to MSX code)
-MSX_CHAR_REVERSE_MAP_INTL = {v: k for k, v in MSX_CHAR_MAP_INTL.items()}
-
-														
 # Graphic character mapping (2-byte characters)
 GRAPHIC_CHAR_MAP_INTL = {
     '☺': (0x01, 0x41), '☻': (0x01, 0x42), '♥': (0x01, 0x43),
@@ -70,13 +54,10 @@ GRAPHIC_CHAR_MAP_INTL = {
     '🮯': (0x01, 0x5F)
 }
 
-# Reverse lookup for graphic characters
-GRAPHIC_CHAR_REVERSE_MAP_INTL = {v: k for k, v in GRAPHIC_CHAR_MAP_INTL.items()}
-
 
 class MSXInternationalCodec(MSXCodecBase):
     """International MSX character set codec"""
-    
+
     def __init__(self):
         super().__init__('msx-intl', MSX_CUSTOM_MAP_INTL, GRAPHIC_CHAR_MAP_INTL)
 

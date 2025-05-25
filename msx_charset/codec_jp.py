@@ -85,7 +85,7 @@ DAKUTEN_MAP = {
 
 class MSXJapaneseCodec(MSXCodecBase):
     """Japanese MSX character set codec"""
-    
+
     def __init__(self):
         super().__init__('msx-jp', MSX_CUSTOM_MAP_JP, GRAPHIC_CHAR_MAP_JP)
         self.dakuten_map = DAKUTEN_MAP
@@ -109,10 +109,10 @@ class MSXJapaneseCodec(MSXCodecBase):
         result = []
         i = 0
         codes_len = len(codes)
-        
+
         while i < codes_len:
             code = codes[i]
-            
+
             # Handle graphic characters
             if code == 0x01 and i + 1 < codes_len:
                 next_code = codes[i + 1]
@@ -121,7 +121,7 @@ class MSXJapaneseCodec(MSXCodecBase):
                     result.append(char)
                     i += 2
                     continue
-            
+
             # Handle dakuten/handakuten
             if i + 1 < codes_len and codes[i + 1] in (0xDE, 0xDF):
                 base_char = self.char_map.get(code)
@@ -136,7 +136,7 @@ class MSXJapaneseCodec(MSXCodecBase):
             else:
                 result.append(self.char_map.get(code, '?'))
                 i += 1
-                
+
         return ''.join(result), len(codes)
 
 

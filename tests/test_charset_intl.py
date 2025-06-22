@@ -3,7 +3,6 @@ import codecs
 from msx_charset import msx_charset
 
 
-
 class TestMSXCharsetIntl(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -48,21 +47,21 @@ class TestMSXCharsetIntl(unittest.TestCase):
     def test_encode_bytes_accented(self):
         # アクセント付き文字のバイト列テスト
         text = "áé"
-        expected = bytes([0xA0, 0x82])  # MSXインターナショナル文字セットの対応するバイト値
+        expected = bytes([0xA0, 0x82])
         encoded = text.encode("msx-intl")
         self.assertEqual(encoded, expected)
 
     def test_encode_bytes_graphic(self):
         # グラフィック文字のバイト列テスト
         text = "☺☻"
-        expected = bytes([0x01, 0x41, 0x01, 0x42])  # MSXインターナショナル文字セットの対応するバイト値
+        expected = bytes([0x01, 0x41, 0x01, 0x42])
         encoded = text.encode("msx-intl")
         self.assertEqual(encoded, expected)
 
     def test_encode_bytes_mixed(self):
         # 混合文字のバイト列テスト
         text = "Aá"
-        expected = bytes([0x41, 0xA0])  # MSXインターナショナル文字セットの対応するバイト値
+        expected = bytes([0x41, 0xA0])
         encoded = text.encode("msx-intl")
         self.assertEqual(encoded, expected)
 
@@ -72,6 +71,16 @@ class TestMSXCharsetIntl(unittest.TestCase):
         decoded = encoded.decode("msx-intl")
         self.assertEqual(text, decoded)
 
+    def test_incremental_decode(self):
+        decoder = codecs.getincrementaldecoder("msx-intl")()
+        expected = ""
+        decoded = decoder.decode(bytes([0x01]))
+        self.assertEqual(decoded, expected)
+
+        expected = "☺"
+        decoded = decoder.decode(bytes([0x41]))
+        self.assertEqual(decoded, expected)
+
 
 if __name__ == "__main__":
-    unittest.main() 
+    unittest.main()

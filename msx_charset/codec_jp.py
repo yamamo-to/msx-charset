@@ -1,3 +1,4 @@
+import codecs
 from .codec_base import MSXCodecBase
 
 # MSX-specific Japanese and symbol characters (0x80-0xFE)
@@ -104,7 +105,7 @@ class MSXJapaneseCodec(MSXCodecBase):
                 result.append(self.char_reverse_map.get(char, 0x3F))
         return bytes(result), len(text)
 
-    def decode(self, codes, errors='strict'):
+    def _decode_internal(self, codes, allow_incomplete=False):
         """Convert MSX code byte sequence to UTF-8 string"""
         result = []
         i = 0
@@ -114,13 +115,19 @@ class MSXJapaneseCodec(MSXCodecBase):
             code = codes[i]
 
             # Handle graphic characters
-            if code == 0x01 and i + 1 < codes_len:
+            if code == 0x01:
+                if i + 1 >= codes_len:
+                    if allow_incomplete:
+                        break
+                    else:
+                        result.append('?')
+                        i += 1
+                        continue
                 next_code = codes[i + 1]
-                char = self.graphic_reverse_map.get((code, next_code))
-                if char:
-                    result.append(char)
-                    i += 2
-                    continue
+                char = self.graphic_reverse_map.get((code, next_code), '?')
+                result.append(char)
+                i += 2
+                continue
 
             # Handle dakuten/handakuten
             if i + 1 < codes_len and codes[i + 1] in (0xDE, 0xDF):
@@ -133,11 +140,16 @@ class MSXJapaneseCodec(MSXCodecBase):
                     mark_char = '゛' if mark == 0xDE else '゜'
                     result.append(base_char + mark_char)
                 i += 2
-            else:
-                result.append(self.char_map.get(code, '?'))
-                i += 1
+                continue
 
-        return ''.join(result), len(codes)
+            result.append(self.char_map.get(code, '?'))
+            i += 1
+
+        return ''.join(result), i
+
+    def decode(self, codes, errors='strict'):
+        decoded, consumed = self._decode_internal(codes, allow_incomplete=False)
+        return decoded, consumed
 
 
 # Create codec instance

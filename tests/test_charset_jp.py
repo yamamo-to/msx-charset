@@ -104,6 +104,16 @@ class TestMSXCharsetJP(unittest.TestCase):
         encoded = text.encode("msx-jp")
         self.assertEqual(encoded, expected)
 
+    def test_incremental_decode(self):
+        decoder = codecs.getincrementaldecoder("msx-jp")()
+        expected = ""
+        decoded = decoder.decode(bytes([0x01]))
+        self.assertEqual(decoded, expected)
+
+        expected = "月"
+        decoded = decoder.decode(bytes([0x41]))
+        self.assertEqual(decoded, expected)
+
 
 if __name__ == "__main__":
     unittest.main()

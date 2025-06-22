@@ -65,6 +65,16 @@ class TestMSXCharsetBR(unittest.TestCase):
         encoded = text.encode("msx-br")
         self.assertEqual(encoded, expected)
 
+    def test_incremental_decode(self):
+        decoder = codecs.getincrementaldecoder("msx-intl")()
+        expected = ""
+        decoded = decoder.decode(bytes([0x01]))
+        self.assertEqual(decoded, expected)
+
+        expected = "☺"
+        decoded = decoder.decode(bytes([0x41]))
+        self.assertEqual(decoded, expected)
+
 
 if __name__ == "__main__":
     unittest.main()

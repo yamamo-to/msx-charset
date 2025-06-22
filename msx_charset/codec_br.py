@@ -1,4 +1,3 @@
-import codecs
 from .codec_base import MSXCodecBase
 
 

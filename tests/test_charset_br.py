@@ -47,26 +47,26 @@ class TestMSXCharsetBR(unittest.TestCase):
     def test_encode_bytes_accented(self):
         # アクセント付き文字のバイト列テスト
         text = "Á¨ÍÓÚÂÊÔÀ"
-        expected = bytes([0x84, 0x86, 0x89, 0x8A, 0x8B, 0x8C, 0x8D, 0x8E, 0x8F])  # MSXブラジル文字セットの対応するバイト値
+        expected = bytes([0x84, 0x86, 0x89, 0x8A, 0x8B, 0x8C, 0x8D, 0x8E, 0x8F])
         encoded = text.encode("msx-br")
         self.assertEqual(encoded, expected)
 
     def test_encode_bytes_graphic(self):
         # グラフィック文字のバイト列テスト
         text = "☺☻"
-        expected = bytes([0x01, 0x41, 0x01, 0x42])  # MSXブラジル文字セットの対応するバイト値
+        expected = bytes([0x01, 0x41, 0x01, 0x42])
         encoded = text.encode("msx-br")
         self.assertEqual(encoded, expected)
 
     def test_encode_bytes_mixed(self):
         # 混合文字のバイト列テスト
         text = "Aá"
-        expected = bytes([0x41, 0xA0])  # MSXブラジル文字セットの対応するバイト値
+        expected = bytes([0x41, 0xA0])
         encoded = text.encode("msx-br")
         self.assertEqual(encoded, expected)
 
     def test_incremental_decode(self):
-        decoder = codecs.getincrementaldecoder("msx-intl")()
+        decoder = codecs.getincrementaldecoder("msx-br")()
         expected = ""
         decoded = decoder.decode(bytes([0x01]))
         self.assertEqual(decoded, expected)

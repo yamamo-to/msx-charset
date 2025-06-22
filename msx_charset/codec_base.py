@@ -1,17 +1,17 @@
 import codecs
 
 PRINTABLE_OR_USEFUL_CTRL = (
-    '\x00'  # NUL
-    '\x07'  # BEL
-    '\x08'  # BS
-    '\x09'  # TAB
-    '\x0A'  # LF
-    '\x0B'  # VT
-    '\x0C'  # FF
-    '\x0D'  # CR
-    '\x1B'  # ESC
-    '\x20'  # SPACE
-    '\x7F'  # DEL
+    "\x00"  # NUL
+    "\x07"  # BEL
+    "\x08"  # BS
+    "\x09"  # TAB
+    "\x0a"  # LF
+    "\x0b"  # VT
+    "\x0c"  # FF
+    "\x0d"  # CR
+    "\x1b"  # ESC
+    "\x20"  # SPACE
+    "\x7f"  # DEL
 )
 
 
@@ -23,7 +23,8 @@ class MSXCodecBase:
 
         # ASCII (0x00-0x7F) range mapping
         self.ascii_map = {
-            i: chr(i) for i in range(0x80)
+            i: chr(i)
+            for i in range(0x80)
             if chr(i).isprintable() or chr(i) in PRINTABLE_OR_USEFUL_CTRL
         }
 
@@ -35,12 +36,10 @@ class MSXCodecBase:
 
         # Create codec info
         self.codec_info = codecs.CodecInfo(
-            name=name,
-            encode=self.encode,
-            decode=self.decode
+            name=name, encode=self.encode, decode=self.decode
         )
 
-    def encode(self, text, errors='strict'):
+    def encode(self, text, errors="strict"):
         """Convert UTF-8 string to MSX code byte sequence"""
         result = bytearray()
         for char in text:
@@ -65,24 +64,24 @@ class MSXCodecBase:
                     if allow_incomplete:
                         break
                     else:
-                        result.append('?')
+                        result.append("?")
                         i += 1
                         continue
                 next_code = codes[i + 1]
-                char = self.graphic_reverse_map.get((code, next_code), '?')
+                char = self.graphic_reverse_map.get((code, next_code), "?")
                 result.append(char)
                 i += 2
                 continue
 
-            result.append(self.char_map.get(code, '?'))
+            result.append(self.char_map.get(code, "?"))
             i += 1
 
-        return ''.join(result), i
+        return "".join(result), i
 
-    def decode(self, codes, errors='strict'):
+    def decode(self, codes, errors="strict"):
         """Convert MSX code byte sequence to UTF-8 string"""
-        decoded, consumed = self._decode_internal(codes, allow_incomplete=False)
-        return decoded, consumed
+        result, consumed = self._decode_internal(codes, allow_incomplete=False)
+        return result, consumed
 
 
 class MSXIncrementalDecoder(codecs.IncrementalDecoder):
@@ -100,13 +99,12 @@ class MSXIncrementalDecoder(codecs.IncrementalDecoder):
         return decoded
 
 
-
 class MSXStreamReader(codecs.StreamReader):
     def __init__(self, codec_info):
         self.codec_info = codec_info
 
     def decode(self, input, final=False):
-        return self.codec_info.decode(input, errors='strict')[0]
+        return self.codec_info.decode(input, errors="strict")[0]
 
     def reset(self):
         pass
@@ -117,7 +115,7 @@ class MSXStreamWriter(codecs.StreamWriter):
         self.codec_info = codec_info
 
     def encode(self, input, final=False):
-        return self.codec_info.encode(input, errors='strict')[0]
+        return self.codec_info.encode(input, errors="strict")[0]
 
     def reset(self):
         pass

@@ -1,4 +1,3 @@
-import codecs
 from .codec_base import MSXCodecBase
 
 # MSX-specific Japanese and symbol characters (0x80-0xFE)
@@ -148,8 +147,8 @@ class MSXJapaneseCodec(MSXCodecBase):
         return ''.join(result), i
 
     def decode(self, codes, errors='strict'):
-        decoded, consumed = self._decode_internal(codes, allow_incomplete=False)
-        return decoded, consumed
+        result, consumed = self._decode_internal(codes, allow_incomplete=False)
+        return result, consumed
 
 
 # Create codec instance

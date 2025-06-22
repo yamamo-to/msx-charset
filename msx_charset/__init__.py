@@ -5,7 +5,7 @@ from .codec_intl import MSXInternationalCodec
 from .codec_br import MSXBrazilianCodec
 from ._version import __version__
 
-__all__ = ["msx_codec_jp", "msx_codec_intl", "msx_codec_br"]
+__all__ = ["__version__", "msx_codec_jp", "msx_codec_intl", "msx_codec_br"]
 
 
 def make_incremental_decoder(codec_class):
